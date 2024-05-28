@@ -16,12 +16,28 @@
 
   --btn-bg-secondary: #fff;
   --btn-color-secondary: #3d3ee1;
+
+  --btn-color-pending: #f74b00;
+  --btn-bg-pending: #ffdfd1;
+
+  --btn-color-progress: #4c9fff;
+  --btn-bg-progress: #deedff;
+
+  --btn-color-done: #4bb516;
+  --btn-bg-done: #dcffcb;
 }
 
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+
+body,
+#root {
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
 }
 
 body,
