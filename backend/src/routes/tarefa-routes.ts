@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import TarefaController from '../controllers/tarefa-controller';
 import { validateData } from '../middlewares/validation-middleware';
-import { createTarefaSchema } from '../schemas/tarefa-schemas';
+import {
+  createTarefaSchema,
+  updateTarefaParams,
+  updateTarefaSchema,
+} from '../schemas/tarefa-schemas';
 
 const tarefaRoutes = Router();
 
@@ -11,6 +15,12 @@ tarefaRoutes.post(
   '/',
   validateData(createTarefaSchema),
   TarefaController.create
+);
+tarefaRoutes.patch(
+  '/:id',
+  validateData(updateTarefaParams, 'params'),
+  validateData(updateTarefaSchema),
+  TarefaController.update
 );
 
 export default tarefaRoutes;
