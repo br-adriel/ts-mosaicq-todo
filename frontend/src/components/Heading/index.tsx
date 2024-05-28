@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Div = styled.div`
+const Heading = styled.div`
   display: flex;
   gap: 8px;
 
@@ -11,3 +11,5 @@ export const Div = styled.div`
     border: 1px solid var(--border-color);
   }
 `;
+
+export default Heading;
