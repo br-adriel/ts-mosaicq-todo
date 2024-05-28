@@ -1,10 +1,15 @@
 import { Request, Response, NextFunction } from 'express';
 import { z, ZodError } from 'zod';
 
-export function validateData(schema: z.ZodObject<any, any>) {
+type DataType = 'body' | 'params';
+
+export function validateData(
+  schema: z.ZodObject<any, any>,
+  dataType: DataType = 'body'
+) {
   return (req: Request, res: Response, next: NextFunction) => {
     try {
-      schema.parse(req.body);
+      schema.parse(req[dataType]);
       next();
     } catch (error) {
       if (error instanceof ZodError) {
