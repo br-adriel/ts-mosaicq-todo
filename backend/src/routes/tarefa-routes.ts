@@ -3,6 +3,7 @@ import TarefaController from '../controllers/tarefa-controller';
 import { validateData } from '../middlewares/validation-middleware';
 import {
   createTarefaSchema,
+  deleteTarefaParams,
   updateTarefaParams,
   updateTarefaSchema,
 } from '../schemas/tarefa-schemas';
@@ -21,6 +22,11 @@ tarefaRoutes.patch(
   validateData(updateTarefaParams, 'params'),
   validateData(updateTarefaSchema),
   TarefaController.update
+);
+tarefaRoutes.delete(
+  '/:id',
+  validateData(deleteTarefaParams, 'params'),
+  TarefaController.delete
 );
 
 export default tarefaRoutes;
