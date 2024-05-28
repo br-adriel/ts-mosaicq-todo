@@ -1,6 +1,10 @@
 import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
-import { createTarefaSchema } from '../schemas/tarefa-schemas';
+import {
+  createTarefaSchema,
+  updateTarefaParams,
+  updateTarefaSchema,
+} from '../schemas/tarefa-schemas';
 import { GetOneTarefaParams } from '../types/controllers/tarefa-controller';
 
 export default class TarefaController {
@@ -29,5 +33,24 @@ export default class TarefaController {
       },
     });
     return res.status(201).json(tarefa);
+  }
+
+  static async update(req: Request, res: Response) {
+    const params = updateTarefaParams.parse(req.params);
+    const tarefa = await prisma.tarefa.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+    if (!tarefa) return res.sendStatus(404);
+
+    const data = updateTarefaSchema.parse(req.body);
+    const tarefaAtualizada = await prisma.tarefa.update({
+      data,
+      where: {
+        id: params.id,
+      },
+    });
+    return res.status(200).json(tarefaAtualizada);
   }
 }
