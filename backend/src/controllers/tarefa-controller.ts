@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import {
   createTarefaSchema,
+  deleteTarefaParams,
   getOneTarefaParams,
   updateTarefaParams,
   updateTarefaSchema,
@@ -53,5 +54,18 @@ export default class TarefaController {
       },
     });
     return res.status(200).json(tarefaAtualizada);
+  }
+
+  static async delete(req: Request, res: Response) {
+    const params = deleteTarefaParams.parse(req.params);
+    const tarefa = await prisma.tarefa.findUnique({
+      where: {
+        id: params.id,
+      },
+    });
+    if (!tarefa) return res.sendStatus(404);
+
+    await prisma.tarefa.delete({ where: { id: params.id } });
+    return res.sendStatus(200);
   }
 }
