@@ -24,3 +24,5 @@ export const createTarefaSchema = z.object({
 export const updateTarefaSchema = createTarefaSchema.partial();
 
 export const updateTarefaParams = getOneTarefaParams;
+
+export const deleteTarefaParams = getOneTarefaParams;
