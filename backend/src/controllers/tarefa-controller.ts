@@ -2,10 +2,10 @@ import { Request, Response } from 'express';
 import prisma from '../lib/prisma';
 import {
   createTarefaSchema,
+  getOneTarefaParams,
   updateTarefaParams,
   updateTarefaSchema,
 } from '../schemas/tarefa-schemas';
-import { GetOneTarefaParams } from '../types/controllers/tarefa-controller';
 
 export default class TarefaController {
   static async getAll(req: Request, res: Response) {
@@ -13,10 +13,11 @@ export default class TarefaController {
     return res.status(200).json({ tarefas });
   }
 
-  static async getOne(req: Request<GetOneTarefaParams>, res: Response) {
+  static async getOne(req: Request, res: Response) {
+    const params = getOneTarefaParams.parse(req.params);
     const tarefa = await prisma.tarefa.findUnique({
       where: {
-        id: req.params.id,
+        id: params.id,
       },
     });
 

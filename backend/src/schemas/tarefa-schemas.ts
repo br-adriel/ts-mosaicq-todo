@@ -1,6 +1,10 @@
 import { z } from 'zod';
 import { Status } from '@prisma/client';
 
+export const getOneTarefaParams = z.object({
+  id: z.string(),
+});
+
 export const createTarefaSchema = z.object({
   titulo: z
     .string({
