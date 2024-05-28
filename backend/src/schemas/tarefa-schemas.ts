@@ -16,3 +16,9 @@ export const createTarefaSchema = z.object({
     .nativeEnum(Status, { invalid_type_error: 'Status inválido' })
     .optional(),
 });
+
+export const updateTarefaSchema = createTarefaSchema.partial();
+
+export const updateTarefaParams = z.object({
+  id: z.string().uuid('UUID inválido'),
+});
