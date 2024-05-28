@@ -1,5 +1,5 @@
 {
-  "name": "mosaic-todo-backend",
+  "name": "backend",
   "version": "1.0.0",
   "description": "Backend for a todo web app",
   "main": "dist/index.js",
