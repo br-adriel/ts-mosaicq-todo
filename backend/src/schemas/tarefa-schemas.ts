@@ -16,9 +16,7 @@ export const createTarefaSchema = z.object({
   descricao: z
     .string({ invalid_type_error: 'Forneça uma string para a descrição' })
     .optional(),
-  status: z
-    .nativeEnum(Status, { invalid_type_error: 'Status inválido' })
-    .optional(),
+  status: z.nativeEnum(Status, { message: 'Status inválido' }).optional(),
 });
 
 export const updateTarefaSchema = createTarefaSchema.partial();
