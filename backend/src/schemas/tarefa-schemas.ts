@@ -23,6 +23,4 @@ export const createTarefaSchema = z.object({
 
 export const updateTarefaSchema = createTarefaSchema.partial();
 
-export const updateTarefaParams = z.object({
-  id: z.string().uuid('UUID inválido'),
-});
+export const updateTarefaParams = getOneTarefaParams;
