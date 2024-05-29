@@ -1,26 +1,18 @@
 import { Formik } from 'formik';
 import { tarefaForm } from '../../forms/tarefa-form';
+import { TarefaData } from '../../model/Tarefa';
 import FormikFieldRenderer from '../FormikFieldRenderer';
 import * as S from './style';
-import { TarefaStatus } from '../../model/Tarefa';
-
-export type SubmitValues = {
-  titulo: string;
-  descricao: string;
-  status: {
-    label: string;
-    value: TarefaStatus;
-  };
-};
 
 interface IProps {
-  onSubmit: (values: SubmitValues) => void;
+  onSubmit: (values: TarefaData) => void;
+  initialValues?: TarefaData;
 }
 
-export default function TarefaForm({ onSubmit }: IProps) {
+export default function TarefaForm({ onSubmit, initialValues }: IProps) {
   return (
     <Formik
-      initialValues={tarefaForm.initialValues}
+      initialValues={initialValues || tarefaForm.initialValues}
       onSubmit={(values: any, { resetForm }) => {
         onSubmit(values);
         resetForm();
