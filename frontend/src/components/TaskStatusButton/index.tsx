@@ -35,14 +35,12 @@ const nextStatus: Record<TarefaStatus, TarefaStatus> = {
 export default function TaskStatusButton({ tarefa }: IProps) {
   const StatusIcon = icons[tarefa.status];
   const [isLoading, setIsLoading] = useState(false);
+
   const { update } = useContext(TarefasContext);
 
   const onClick = async () => {
     setIsLoading(true);
-    await update({
-      ...tarefa,
-      status: nextStatus[tarefa.status],
-    });
+    await update(tarefa.id, { status: nextStatus[tarefa.status] });
     setIsLoading(false);
   };
 
