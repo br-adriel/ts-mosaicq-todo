@@ -1,9 +1,10 @@
-import Tarefa from '../../model/Tarefa';
+import { useContext } from 'react';
+import TarefasContext from '../../context/TarefasContext';
 import TaskItem from '../TaskItem';
 import * as S from './style';
 
 export default function TasksList() {
-  const tarefas: Tarefa[] = [];
+  const { tarefas } = useContext(TarefasContext);
 
   if (!tarefas.length)
     return (

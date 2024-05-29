@@ -1,11 +1,14 @@
 import { Plus } from '@phosphor-icons/react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
 import TasksList from '../components/TasksList';
+import TarefasContext from '../context/TarefasContext';
 
 export default function Home() {
+  const { isLoading } = useContext(TarefasContext);
   return (
     <Main>
       <Container>
@@ -16,7 +19,7 @@ export default function Home() {
             <span className='hide-sm'>Nova tarefa</span>
           </Link>
         </Heading>
-        <TasksList />
+        {isLoading ? <h3>Carregando...</h3> : <TasksList />}
       </Container>
     </Main>
   );
