@@ -26,10 +26,6 @@ export const tarefaForm = {
       type: 'select',
       label: 'Status:',
       id: 'status',
-      defaultValue: {
-        label: 'Pendente',
-        value: 'PENDENTE',
-      },
       options: [
         {
           label: 'Pendente',
