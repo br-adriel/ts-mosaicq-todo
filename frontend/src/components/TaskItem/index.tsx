@@ -1,21 +1,17 @@
 import { Link } from 'react-router-dom';
-import Tarefa, { TarefaStatus } from '../../model/Tarefa';
-import TaskStatusButton from '../TaskStatusButton';
+import Tarefa from '../../model/Tarefa';
+import TaskStatusButton, {
+  statusContainerClassName,
+} from '../TaskStatusButton';
 import * as S from './style';
 
 interface IProps {
   tarefa: Tarefa;
 }
 
-const className: Record<TarefaStatus, string> = {
-  PENDENTE: 'pending',
-  EM_PROGRESSO: 'progress',
-  CONCLUIDA: 'done',
-};
-
 export default function TaskItem({ tarefa }: IProps) {
   return (
-    <S.Div className={className[tarefa.status]}>
+    <S.Div className={statusContainerClassName[tarefa.status]}>
       <TaskStatusButton tarefa={tarefa} />
       <div>
         <Link to={'/tasks/' + tarefa.id}>
