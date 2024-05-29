@@ -1,4 +1,4 @@
-import { ReactNode, createContext, useEffect, useState } from 'react';
+import { ReactNode, createContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../lib/axios';
 import Tarefa from '../model/Tarefa';
@@ -58,10 +58,6 @@ export const TarefasProvider = ({ children }: IProps) => {
       toast.error('Não foi possível atualizar a tarefa.');
     }
   };
-
-  useEffect(() => {
-    fetchAll();
-  }, []);
 
   return (
     <TarefasContext.Provider
