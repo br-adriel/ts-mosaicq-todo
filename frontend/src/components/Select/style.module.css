@@ -1,0 +1,43 @@
+.option {
+  padding: 8px;
+  background-color: #fff;
+  color: #000;
+}
+
+.option:hover {
+  filter: brightness(0.9);
+}
+
+.option:last-of-type {
+  border-radius: 0 0 8px 8px;
+}
+
+.selected_option {
+  background-color: #3d3ee1;
+  color: #fff;
+}
+
+.menu {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  border-radius: 0 0 8px 8px;
+}
+
+.control {
+  background-color: #fff;
+  border: 1px solid var(--border-color);
+  padding: 8px;
+  margin-top: 4px;
+}
+
+.control_error {
+  border-color: red;
+}
+
+.control_closed {
+  border-radius: 8px;
+}
+
+.control_open {
+  border-radius: 8px 8px 0 0;
+}
