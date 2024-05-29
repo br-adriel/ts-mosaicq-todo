@@ -1,6 +1,7 @@
 import { ArrowLeft } from '@phosphor-icons/react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
@@ -12,10 +13,19 @@ export default function AddTarefa() {
   const [isLoading, setIsLoading] = useState(false);
 
   const save = async (values: SubmitValues) => {
-    setIsLoading(true);
-    const { data: tarefa } = await api.post<Tarefa>('tarefas', values);
-    setIsLoading(false);
-    console.log(tarefa);
+    try {
+      setIsLoading(true);
+      await api.post<Tarefa>('tarefas', values);
+      toast.success('Tarefa criada!');
+    } catch (err: any) {
+      if (err.response) {
+        toast.error('Um erro ocorreu: ' + err.response.data.error);
+      } else {
+        toast.error('Um erro ocorreu!');
+      }
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
