@@ -1,5 +1,6 @@
 import { Link, useRouteError } from 'react-router-dom';
 import styled from 'styled-components';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 
 export default function ErrorPage() {
@@ -16,6 +17,7 @@ export default function ErrorPage() {
           tarde
         </p>
       </Main>
+      <Footer />
     </>
   );
 }
