@@ -17,7 +17,10 @@ export default function FormikFieldRenderer({ field }: IProps) {
       {field.type == 'select' ? (
         <Select field={field} />
       ) : (
-        <Field {...field} className={meta.error && meta.touched && 'error'} />
+        <Field
+          {...field}
+          className={meta.error && meta.touched ? 'error' : ''}
+        />
       )}
 
       {meta.touched && meta.error && (
