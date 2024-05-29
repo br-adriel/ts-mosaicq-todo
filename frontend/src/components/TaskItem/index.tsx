@@ -16,7 +16,7 @@ const className: Record<TarefaStatus, string> = {
 export default function TaskItem({ tarefa }: IProps) {
   return (
     <S.Div className={className[tarefa.status]}>
-      <TaskStatusButton status={tarefa.status} id={tarefa.id} />
+      <TaskStatusButton tarefa={tarefa} />
       <div>
         <Link to={'/tasks/' + tarefa.id}>
           <h3>{tarefa.titulo}</h3>

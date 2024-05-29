@@ -7,6 +7,7 @@ interface TarefasContextData {
   tarefas: Tarefa[];
   isLoading: boolean;
   fetchAll: () => Promise<void>;
+  update: (tarefa: Tarefa) => Promise<void>;
 }
 
 const TarefasContext = createContext<TarefasContextData>(
@@ -23,12 +24,38 @@ export const TarefasProvider = ({ children }: IProps) => {
 
   const fetchAll = async () => {
     try {
+      setIsLoading(true);
       const { data } = await api.get('tarefas');
       setTarefas(data.tarefas);
     } catch (err: any) {
       toast.error('Não foi possível recuperar as tarefas.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const update = async (tarefa: Tarefa) => {
+    try {
+      const { data } = await api.patch('tarefas/' + tarefa.id, tarefa);
+      setTarefas((prev) => {
+        return prev
+          .map((t) => {
+            if (t.id == data.id) return data;
+            return t;
+          })
+          .sort((a, b) => {
+            if (a.status === b.status) {
+              return (
+                new Date(b.dataCriacao).getTime() -
+                new Date(a.dataCriacao).getTime()
+              );
+            } else {
+              return b.status.localeCompare(a.status);
+            }
+          });
+      });
+    } catch (err: any) {
+      toast.error('Não foi possível atualizar a tarefa.');
     }
   };
 
@@ -42,6 +69,7 @@ export const TarefasProvider = ({ children }: IProps) => {
         tarefas,
         isLoading,
         fetchAll,
+        update,
       }}
     >
       {children}

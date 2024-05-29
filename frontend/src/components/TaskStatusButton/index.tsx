@@ -1,10 +1,17 @@
-import { CheckCircle, Clock, Icon, SpinnerGap } from '@phosphor-icons/react';
-import { TarefaStatus } from '../../model/Tarefa';
+import {
+  CheckCircle,
+  Clock,
+  HourglassSimpleLow,
+  Icon,
+  SpinnerGap,
+} from '@phosphor-icons/react';
+import { useContext, useState } from 'react';
+import TarefasContext from '../../context/TarefasContext';
+import Tarefa, { TarefaStatus } from '../../model/Tarefa';
 import * as S from './style';
 
 interface IProps {
-  status: TarefaStatus;
-  id: string;
+  tarefa: Tarefa;
 }
 
 const icons: Record<TarefaStatus, Icon> = {
@@ -19,20 +26,29 @@ const titles: Record<TarefaStatus, string> = {
   CONCLUIDA: 'Tarefa concluida, clique para voltar ao estado de pendente',
 };
 
-const nextStage: Record<TarefaStatus, TarefaStatus> = {
+const nextStatus: Record<TarefaStatus, TarefaStatus> = {
   PENDENTE: 'EM_PROGRESSO',
   EM_PROGRESSO: 'CONCLUIDA',
   CONCLUIDA: 'PENDENTE',
 };
 
-export default function TaskStatusButton({ id, status }: IProps) {
-  const StatusIcon = icons[status];
+export default function TaskStatusButton({ tarefa }: IProps) {
+  const StatusIcon = icons[tarefa.status];
+  const [isLoading, setIsLoading] = useState(false);
+  const { update } = useContext(TarefasContext);
 
-  const onClick = async () => {};
+  const onClick = async () => {
+    setIsLoading(true);
+    await update({
+      ...tarefa,
+      status: nextStatus[tarefa.status],
+    });
+    setIsLoading(false);
+  };
 
   return (
-    <S.Button type='button' onClick={onClick} title={titles[status]}>
-      <StatusIcon size={24} />
+    <S.Button type='button' onClick={onClick} title={titles[tarefa.status]}>
+      {isLoading ? <HourglassSimpleLow size={24} /> : <StatusIcon size={24} />}
     </S.Button>
   );
 }
