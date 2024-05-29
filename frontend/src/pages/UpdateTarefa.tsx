@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import BackButton from '../components/BackButton';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
+import Loading from '../components/Loading';
 import TarefaForm from '../components/TarefaForm';
 import TarefasContext from '../context/TarefasContext';
 import { api } from '../lib/axios';
@@ -53,9 +54,9 @@ export default function UpdateTarefa() {
           <h2>Atualizar tarefa</h2>
         </Heading>
         {isLoading ? (
-          <h3>Salvando...</h3>
+          <Loading message='Salvando...' />
         ) : isStarting ? (
-          <h3>Carregando...</h3>
+          <Loading />
         ) : (
           <TarefaForm onSubmit={submit} initialValues={initialValues} />
         )}

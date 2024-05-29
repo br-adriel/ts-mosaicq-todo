@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import BackButton from '../components/BackButton';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
+import Loading from '../components/Loading';
 import TarefaForm from '../components/TarefaForm';
 import TarefasContext from '../context/TarefasContext';
 
@@ -16,7 +17,11 @@ export default function AddTarefa() {
           <BackButton />
           <h2>Adicionar tarefa</h2>
         </Heading>
-        {isLoading ? <h3>Salvando...</h3> : <TarefaForm onSubmit={create} />}
+        {isLoading ? (
+          <Loading message='Salvando...' />
+        ) : (
+          <TarefaForm onSubmit={create} />
+        )}
       </Container>
     </Main>
   );

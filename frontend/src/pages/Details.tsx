@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
+import Loading from '../components/Loading';
 import TaskDetails from '../components/TaskDetails';
 import TaskStatusBadge from '../components/TaskStatusBadge';
 import { api } from '../lib/axios';
@@ -31,15 +32,22 @@ export default function Details() {
     if (id) getTarefa();
   }, [id]);
 
-  if (!isLoading && !tarefa) return <h2>Tarefa não encontrada</h2>;
   return (
     <Main>
       <Container>
-        <Heading>
-          <h2>{isLoading ? 'Carregando...' : tarefa!.titulo}</h2>
-          {tarefa && <TaskStatusBadge tarefa={tarefa} onClick={getTarefa} />}
-        </Heading>
-        {isLoading ? <h3>Salvando...</h3> : <TaskDetails tarefa={tarefa!} />}
+        {!isLoading && !tarefa ? (
+          <Loading message='Tarefa não encontrada' />
+        ) : (
+          <>
+            <Heading>
+              <h2>{isLoading ? 'Carregando...' : tarefa!.titulo}</h2>
+              {tarefa && (
+                <TaskStatusBadge tarefa={tarefa} onClick={getTarefa} />
+              )}
+            </Heading>
+            {isLoading ? <Loading /> : <TaskDetails tarefa={tarefa!} />}
+          </>
+        )}
       </Container>
     </Main>
   );
