@@ -2,16 +2,29 @@ import { Formik } from 'formik';
 import { tarefaForm } from '../../forms/tarefa-form';
 import FormikFieldRenderer from '../FormikFieldRenderer';
 import * as S from './style';
+import { TarefaStatus } from '../../model/Tarefa';
 
-export default function TarefaForm() {
-  const saveTarefa = async (values: any) => {
-    console.log(values);
+export type SubmitValues = {
+  titulo: string;
+  descricao: string;
+  status: {
+    label: string;
+    value: TarefaStatus;
   };
+};
 
+interface IProps {
+  onSubmit: (values: SubmitValues) => void;
+}
+
+export default function TarefaForm({ onSubmit }: IProps) {
   return (
     <Formik
       initialValues={tarefaForm.initialValues}
-      onSubmit={saveTarefa}
+      onSubmit={(values: any, { resetForm }) => {
+        onSubmit(values);
+        resetForm();
+      }}
       validationSchema={tarefaForm.validationSchema}
     >
       {({ dirty, isValid }) => {

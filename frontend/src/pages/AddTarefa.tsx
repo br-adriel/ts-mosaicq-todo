@@ -1,11 +1,23 @@
 import { ArrowLeft } from '@phosphor-icons/react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import Heading from '../components/Heading';
 import styled from 'styled-components';
 import Container from '../components/Container';
-import TarefaForm from '../components/TarefaForm';
+import Heading from '../components/Heading';
+import TarefaForm, { SubmitValues } from '../components/TarefaForm';
+import { api } from '../lib/axios';
+import Tarefa from '../model/Tarefa';
 
 export default function AddTarefa() {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const save = async (values: SubmitValues) => {
+    setIsLoading(true);
+    const { data: tarefa } = await api.post<Tarefa>('tarefas', values);
+    setIsLoading(false);
+    console.log(tarefa);
+  };
+
   return (
     <Main>
       <Container>
@@ -16,7 +28,7 @@ export default function AddTarefa() {
           </Link>
           <h2>Adicionar tarefa</h2>
         </Heading>
-        <TarefaForm />
+        {isLoading ? <h3>Salvando...</h3> : <TarefaForm onSubmit={save} />}
       </Container>
     </Main>
   );
