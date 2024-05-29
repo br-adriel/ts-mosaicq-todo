@@ -1,7 +1,7 @@
-import { ArrowLeft } from '@phosphor-icons/react';
 import { useContext, useEffect, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
+import BackButton from '../components/BackButton';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
 import TarefaForm from '../components/TarefaForm';
@@ -49,10 +49,7 @@ export default function UpdateTarefa() {
     <Main>
       <Container>
         <Heading>
-          <Link to='/' className='btn secondary' title='Voltar'>
-            <ArrowLeft size={24} />
-            <span className='hide-sm'>Voltar</span>
-          </Link>
+          <BackButton />
           <h2>Atualizar tarefa</h2>
         </Heading>
         {isLoading ? (

@@ -1,7 +1,6 @@
-import { ArrowLeft } from '@phosphor-icons/react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+import BackButton from '../components/BackButton';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
 import TarefaForm from '../components/TarefaForm';
@@ -14,10 +13,7 @@ export default function AddTarefa() {
     <Main>
       <Container>
         <Heading>
-          <Link to='/' className='btn secondary' title='Voltar'>
-            <ArrowLeft size={24} />
-            <span className='hide-sm'>Voltar</span>
-          </Link>
+          <BackButton />
           <h2>Adicionar tarefa</h2>
         </Heading>
         {isLoading ? <h3>Salvando...</h3> : <TarefaForm onSubmit={create} />}
