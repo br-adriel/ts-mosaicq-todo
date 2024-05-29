@@ -4,10 +4,10 @@
   font-size: 16px;
 
   --bg-header: #2a3236;
-  --bg-footer: var(var(--bg-header));
+  --bg-footer: #2a3236;
 
   --text-header: #fff;
-  --text-footer: var(--text-header);
+  --text-footer: #fff;
 
   --border-color: #c0cccd;
 
