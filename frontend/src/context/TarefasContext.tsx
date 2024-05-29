@@ -44,16 +44,14 @@ export const TarefasProvider = ({ children }: IProps) => {
     }
   };
 
-  const create = async (tarefa: Omit<Omit<Tarefa, 'id'>, 'dataCriacao'>) => {
+  const create = async (tarefa: TarefaData) => {
     try {
       setIsLoading(true);
-
       const { data } = await api.post<Tarefa>('tarefas', tarefa);
       setTarefas((prev) => {
         const newTarefas = [...prev, data];
         return newTarefas.sort(sortByStatusAndDataCriacao);
       });
-
       toast.success('Tarefa criada!');
     } catch (err: any) {
       handleError(err);
@@ -62,10 +60,10 @@ export const TarefasProvider = ({ children }: IProps) => {
     }
   };
 
-  const update = async (id: String, tarefa: Partial<TarefaData>) => {
+  const update = async (id: string, tarefa: Partial<TarefaData>) => {
     try {
-      const { data } = await api.patch('tarefas/' + id, tarefa);
       setIsLoading(true);
+      const { data } = await api.patch('tarefas/' + id, tarefa);
       setTarefas((prev) => {
         return prev
           .map((t) => {
