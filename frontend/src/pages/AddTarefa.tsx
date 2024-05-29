@@ -1,32 +1,14 @@
 import { ArrowLeft } from '@phosphor-icons/react';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
-import TarefaForm, { SubmitValues } from '../components/TarefaForm';
-import { api } from '../lib/axios';
-import Tarefa from '../model/Tarefa';
+import TarefaForm from '../components/TarefaForm';
+import TarefasContext from '../context/TarefasContext';
 
 export default function AddTarefa() {
-  const [isLoading, setIsLoading] = useState(false);
-
-  const save = async (values: SubmitValues) => {
-    try {
-      setIsLoading(true);
-      await api.post<Tarefa>('tarefas', values);
-      toast.success('Tarefa criada!');
-    } catch (err: any) {
-      if (err.response) {
-        toast.error('Um erro ocorreu: ' + err.response.data.error);
-      } else {
-        toast.error('Um erro ocorreu!');
-      }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  const { create, isLoading } = useContext(TarefasContext);
 
   return (
     <Main>
@@ -38,7 +20,7 @@ export default function AddTarefa() {
           </Link>
           <h2>Adicionar tarefa</h2>
         </Heading>
-        {isLoading ? <h3>Salvando...</h3> : <TarefaForm onSubmit={save} />}
+        {isLoading ? <h3>Salvando...</h3> : <TarefaForm onSubmit={create} />}
       </Container>
     </Main>
   );
