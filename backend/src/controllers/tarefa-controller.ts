@@ -10,7 +10,9 @@ import {
 
 export default class TarefaController {
   static async getAll(req: Request, res: Response) {
-    const tarefas = await prisma.tarefa.findMany();
+    const tarefas = await prisma.tarefa.findMany({
+      orderBy: [{ status: 'asc' }, { dataCriacao: 'desc' }],
+    });
     return res.status(200).json({ tarefas });
   }
 
