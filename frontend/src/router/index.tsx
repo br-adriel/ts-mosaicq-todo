@@ -3,6 +3,7 @@ import App from '../App';
 import AddTarefa from '../pages/AddTarefa';
 import Home from '../pages/Home';
 import UpdateTarefa from '../pages/UpdateTarefa';
+import Details from '../pages/Details';
 
 const router = createBrowserRouter([
   {
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
       {
         path: 'tasks/add',
         element: <AddTarefa />,
+      },
+      {
+        path: 'tasks/:id',
+        element: <Details />,
       },
       {
         path: 'tasks/:id/update',
