@@ -88,12 +88,12 @@ button,
   background-color: var(--btn-bg-primary);
   color: var(--btn-color-primary);
   cursor: pointer;
+  transition: all 300ms ease-out;
 }
 
 button:hover,
 .btn:hover {
   filter: brightness(0.9);
-  transition: all 300ms ease-out;
 }
 
 button.secondary,
