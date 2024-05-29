@@ -1,7 +1,8 @@
 import { createBrowserRouter } from 'react-router-dom';
 import App from '../App';
-import Home from '../pages/Home';
 import AddTarefa from '../pages/AddTarefa';
+import Home from '../pages/Home';
+import UpdateTarefa from '../pages/UpdateTarefa';
 
 const router = createBrowserRouter([
   {
@@ -15,6 +16,10 @@ const router = createBrowserRouter([
       {
         path: 'tasks/add',
         element: <AddTarefa />,
+      },
+      {
+        path: 'tasks/:id/update',
+        element: <UpdateTarefa />,
       },
     ],
   },
