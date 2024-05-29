@@ -56,6 +56,7 @@ export const TarefasProvider = ({ children }: IProps) => {
       toast.success('Tarefa criada!');
     } catch (err: any) {
       handleError(err);
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -76,6 +77,7 @@ export const TarefasProvider = ({ children }: IProps) => {
       toast.success('Tarefa atualizada!');
     } catch (err: any) {
       handleError(err);
+      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -89,6 +91,7 @@ export const TarefasProvider = ({ children }: IProps) => {
       toast.success('Tarefa removida!');
     } catch (err: any) {
       handleError(err);
+      throw err;
     } finally {
       setIsLoading(false);
     }

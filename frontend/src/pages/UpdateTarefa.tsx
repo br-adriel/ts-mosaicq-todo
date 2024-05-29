@@ -1,6 +1,6 @@
 import { ArrowLeft } from '@phosphor-icons/react';
 import { useContext, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
 import Heading from '../components/Heading';
@@ -11,8 +11,9 @@ import Tarefa, { TarefaData } from '../model/Tarefa';
 
 export default function UpdateTarefa() {
   const { id } = useParams<{ id: string }>();
-
   const { update, isLoading } = useContext(TarefasContext);
+
+  const navigate = useNavigate();
 
   const [isStarting, setIsStarting] = useState(true);
   const [initialValues, setInitialValues] = useState<TarefaData>({
@@ -32,10 +33,9 @@ export default function UpdateTarefa() {
     setIsStarting(false);
   };
 
-  const submit = async (values: TarefaData) => {
+  const submit = (values: TarefaData) => {
     if (id) {
-      await update(id, values);
-      getInitialValues(id);
+      update(id, values).then(() => navigate('/tasks/' + id));
     }
   };
 

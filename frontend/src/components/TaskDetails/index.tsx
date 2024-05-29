@@ -1,6 +1,6 @@
 import { CalendarBlank, Pen, Trash } from '@phosphor-icons/react';
 import { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import TarefasContext from '../../context/TarefasContext';
 import Tarefa from '../../model/Tarefa';
 import * as S from './style';
@@ -11,6 +11,7 @@ interface IProps {
 
 export default function TaskDetails({ tarefa }: IProps) {
   const { remove } = useContext(TarefasContext);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -33,7 +34,10 @@ export default function TaskDetails({ tarefa }: IProps) {
             <span className='hide-sm'>Editar</span>
           </Link>
 
-          <button title='Apagar' onClick={() => remove(tarefa.id)}>
+          <button
+            title='Apagar'
+            onClick={() => remove(tarefa.id).then(() => navigate('/'))}
+          >
             <Trash size={20} />
             <span className='hide-sm'>Apagar</span>
           </button>
