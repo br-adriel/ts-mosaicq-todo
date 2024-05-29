@@ -10,6 +10,7 @@ interface TarefasContextData {
   fetchAll: () => Promise<void>;
   create: (tarefa: TarefaData) => Promise<void>;
   update: (id: string, tarefa: Partial<TarefaData>) => Promise<void>;
+  remove: (id: string) => Promise<void>;
 }
 
 const TarefasContext = createContext<TarefasContextData>(
@@ -80,6 +81,19 @@ export const TarefasProvider = ({ children }: IProps) => {
     }
   };
 
+  const remove = async (id: string) => {
+    try {
+      setIsLoading(true);
+      await api.delete('tarefas/' + id);
+      setTarefas((prev) => prev.filter((t) => t.id != id));
+      toast.success('Tarefa removida!');
+    } catch (err: any) {
+      handleError(err);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <TarefasContext.Provider
       value={{
@@ -88,6 +102,7 @@ export const TarefasProvider = ({ children }: IProps) => {
         fetchAll,
         create,
         update,
+        remove,
       }}
     >
       {children}
