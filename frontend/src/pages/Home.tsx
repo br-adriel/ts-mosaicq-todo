@@ -1,5 +1,5 @@
 import { Plus } from '@phosphor-icons/react';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Container from '../components/Container';
@@ -8,7 +8,12 @@ import TasksList from '../components/TasksList';
 import TarefasContext from '../context/TarefasContext';
 
 export default function Home() {
-  const { isLoading } = useContext(TarefasContext);
+  const { isLoading, fetchAll } = useContext(TarefasContext);
+
+  useEffect(() => {
+    fetchAll();
+  }, []);
+
   return (
     <Main>
       <Container>
