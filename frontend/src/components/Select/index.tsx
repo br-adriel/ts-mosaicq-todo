@@ -11,12 +11,16 @@ interface IProps {
 export default function Select({ field }: IProps) {
   const [_, meta, helpers] = useField(field.name);
 
+  const initialOption = field.options!.filter(
+    (op) => op.value === meta.initialValue
+  )[0];
+
   return (
     <ReactSelect
       instanceId={field.id}
       options={field.options}
       placeholder={field.placeholder}
-      defaultValue={field.defaultValue}
+      defaultValue={initialOption}
       name={field.name}
       unstyled={true}
       onChange={(newOption) => helpers.setValue((newOption as any).value)}
