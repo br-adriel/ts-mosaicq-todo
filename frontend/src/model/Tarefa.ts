@@ -3,7 +3,7 @@ export default interface Tarefa {
   titulo: string;
   descicao: string;
   status: TarefaStatus;
-  dataCriacao: Date;
+  dataCriacao: string;
 }
 
 export type TarefaStatus = 'EM_PROGRESSO' | 'PENDENTE' | 'CONCLUIDA';
