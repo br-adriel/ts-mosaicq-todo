@@ -39,6 +39,6 @@ export const Div = styled.div`
   }
 
   @media screen and (min-width: 768px) {
-    max-width: calc(25% - 4px);
+    max-width: calc(25% - 6px);
   }
 `;
