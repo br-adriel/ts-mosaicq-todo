@@ -1,0 +1,394 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "MosaicQ Tasks API",
+    "description": "API de lista de tarefas construída como desafio para um processo seletivo de estágio.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/"
+    }
+  ],
+  "paths": {
+    "/tarefas/": {
+      "get": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Busca todas as tarefas",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Retorna todas as tarefas.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefaAll"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefaAll"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Cria uma nova tarefa.",
+        "description": "",
+        "responses": {
+          "201": {
+            "description": "Objeto criado com sucesso. Retorna o objeto criado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefa"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefa"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Há algo de errado com a requisição.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tarefaCreateBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/tarefaCreateBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/tarefas/{id}": {
+      "get": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Busca a tarefa com o id referente.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Retorna a tarefa solicitada.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefa"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefa"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tarefa não encontrada."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Atualiza uma tarefa",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Atualização realizada com sucesso. Retorna o objeto atualizado.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefa"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/tarefa"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Há algo de errado com a requisição.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/error400"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Tarefa não encontrada."
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/tarefaUpdateBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/tarefaUpdateBody"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Tarefas"
+        ],
+        "summary": "Exclui uma tarefa.",
+        "description": "",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tarefa deletada com sucesso."
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "404": {
+            "description": "Tarefa não encontrada."
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "tarefa": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "number",
+            "example": 0
+          },
+          "titulo": {
+            "type": "string",
+            "example": "titulo"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "descricao"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDENTE",
+              "EM_PROGRESSO",
+              "CONCLUIDA"
+            ]
+          },
+          "dataCriacao": {
+            "type": "string",
+            "example": "2024-05-29T22:39:44.914Z"
+          }
+        },
+        "xml": {
+          "name": "tarefa"
+        }
+      },
+      "tarefaAll": {
+        "type": "object",
+        "properties": {
+          "tarefas": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number",
+                  "example": 0
+                },
+                "titulo": {
+                  "type": "string",
+                  "example": "titulo"
+                },
+                "descricao": {
+                  "type": "string",
+                  "example": "descricao"
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "PENDENTE",
+                    "EM_PROGRESSO",
+                    "CONCLUIDA"
+                  ]
+                },
+                "dataCriacao": {
+                  "type": "string",
+                  "example": "2024-05-29T22:39:44.914Z"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "tarefas"
+        ],
+        "xml": {
+          "name": "tarefaAll"
+        }
+      },
+      "tarefaCreateBody": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "example": "titulo"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "descricao"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDENTE",
+              "EM_PROGRESSO",
+              "CONCLUIDA"
+            ]
+          }
+        },
+        "required": [
+          "titulo",
+          "status"
+        ],
+        "xml": {
+          "name": "tarefaCreateBody"
+        }
+      },
+      "tarefaUpdateBody": {
+        "type": "object",
+        "properties": {
+          "titulo": {
+            "type": "string",
+            "example": "titulo"
+          },
+          "descricao": {
+            "type": "string",
+            "example": "descricao"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "PENDENTE",
+              "EM_PROGRESSO",
+              "CONCLUIDA"
+            ]
+          }
+        },
+        "xml": {
+          "name": "tarefaUpdateBody"
+        }
+      },
+      "error400": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "example": "Dados inválidos"
+          },
+          "details": {
+            "type": "object",
+            "properties": {
+              "nome do campo": {
+                "type": "string",
+                "example": "o que há de errado com o valor"
+              }
+            }
+          }
+        },
+        "required": [
+          "error",
+          "details"
+        ],
+        "xml": {
+          "name": "error400"
+        }
+      }
+    }
+  }
+}
