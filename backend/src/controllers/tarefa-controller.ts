@@ -13,6 +13,9 @@ export default class TarefaController {
   static async getAll(req: Request, res: Response) {
     /**
     #swagger.tags = ['Tarefas']
+    #swagger.security = [{
+        "JWT": []
+    }]
     #swagger.summary = 'Busca todas as tarefas'
     #swagger.responses[200] = {
       description: 'Retorna todas as tarefas.',
@@ -31,6 +34,9 @@ export default class TarefaController {
   static async getOne(req: Request, res: Response) {
     /**
     #swagger.tags = ['Tarefas']
+    #swagger.security = [{
+        "JWT": []
+    }]
     #swagger.summary = 'Busca a tarefa com o id referente.'
     #swagger.responses[200] = {
       description: 'Retorna a tarefa solicitada.',
@@ -57,6 +63,9 @@ export default class TarefaController {
   static async create(req: Request, res: Response) {
     /**
     #swagger.tags = ['Tarefas']
+    #swagger.security = [{
+        "JWT": []
+    }]
     #swagger.summary = 'Cria uma nova tarefa.'
     #swagger.requestBody = {
       required: true,
@@ -87,6 +96,9 @@ export default class TarefaController {
   static async update(req: Request, res: Response) {
     /**
     #swagger.tags = ['Tarefas']
+    #swagger.security = [{
+        "JWT": []
+    }]
     #swagger.summary = 'Atualiza uma tarefa'
     #swagger.requestBody = {
       required: true,
@@ -130,6 +142,9 @@ export default class TarefaController {
   static async delete(req: Request, res: Response) {
     /**
     #swagger.tags = ['Tarefas']
+    #swagger.security = [{
+        "JWT": []
+    }]
     #swagger.summary = 'Exclui uma tarefa.'
     #swagger.responses[200] = {
       description: 'Tarefa deletada com sucesso.'

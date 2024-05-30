@@ -54,6 +54,34 @@ const doc = {
           'nome do campo': 'o que há de errado com o valor',
         },
       },
+      loginBody: {
+        $nomeUsuario: 'string',
+        $senha: 'string',
+      },
+      loginResponse: {
+        $accessToken: 'string',
+      },
+      registerBody: {
+        $nomeUsuario: 'string',
+        $senha: 'string',
+        $confirmacaoSenha: 'string',
+      },
+      registerResponse: {
+        $usuario: {
+          $id: 'string',
+          $nomeUsuario: 'string',
+        },
+        $accessToken: 'string',
+      },
+    },
+  },
+  securityDefinitions: {
+    JWT: {
+      type: 'apiKey',
+      name: 'Authorization',
+      in: 'header',
+      description:
+        "Token JWT, conseguido na rota de login ou cadastro, a ser passado como 'Authorization: Bearer <token>'",
     },
   },
 };

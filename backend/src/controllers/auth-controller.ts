@@ -16,6 +16,20 @@ function generateToken(userId: string) {
 
 export default class AuthController {
   static async login(req: Request, res: Response) {
+    /**
+    #swagger.tags = ['Autenticação']
+    #swagger.summary = 'Realiza login na API'
+    #swagger.requestBody = {
+      required: true,
+      schema: { $ref: "#/components/schemas/loginBody" }
+    }
+    */
+    /**
+    #swagger.responses[200] = {
+      description: 'Retorna o token de acesso.',
+      schema: { $ref: '#/components/schemas/loginResponse' }
+    }
+    */
     const body = loginSchema.parse(req.body);
 
     const usuario = await prisma.usuario.findUnique({
@@ -39,6 +53,20 @@ export default class AuthController {
   }
 
   static async register(req: Request, res: Response) {
+    /**
+    #swagger.tags = ['Autenticação']
+    #swagger.summary = 'Registra um novo usuário na API'
+    #swagger.requestBody = {
+      required: true,
+      schema: { $ref: '#/components/schemas/registerBody' }
+    }
+    */
+    /**
+    #swagger.responses[200] = {
+      description: 'Retorna o usuário criado e o token de acesso.',
+      schema: { $ref: '#/components/schemas/registerResponse' }
+    }
+    */
     const body = registerSchema.parse(req.body);
     const usernameTaken = await prisma.usuario.findUnique({
       where: {

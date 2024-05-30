@@ -34,7 +34,12 @@
               }
             }
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "post": {
         "tags": [
@@ -43,6 +48,9 @@
         "summary": "Cria uma nova tarefa.",
         "description": "",
         "responses": {
+          "200": {
+            "description": "OK"
+          },
           "201": {
             "description": "Objeto criado com sucesso. Retorna o objeto criado.",
             "content": {
@@ -77,6 +85,11 @@
             "description": "Erro Interno do Servidor"
           }
         },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -127,10 +140,18 @@
               }
             }
           },
+          "403": {
+            "description": "Acesso Negado"
+          },
           "404": {
             "description": "Tarefa não encontrada."
           }
-        }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
       },
       "patch": {
         "tags": [
@@ -179,6 +200,9 @@
               }
             }
           },
+          "403": {
+            "description": "Acesso Negado"
+          },
           "404": {
             "description": "Tarefa não encontrada."
           },
@@ -186,6 +210,11 @@
             "description": "Erro Interno do Servidor"
           }
         },
+        "security": [
+          {
+            "JWT": []
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -225,11 +254,113 @@
           "400": {
             "description": "Solicitação Inválida"
           },
+          "403": {
+            "description": "Acesso Negado"
+          },
           "404": {
             "description": "Tarefa não encontrada."
           },
           "500": {
             "description": "Erro Interno do Servidor"
+          }
+        },
+        "security": [
+          {
+            "JWT": []
+          }
+        ]
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Realiza login na API",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Retorna o token de acesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/loginBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/loginBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/register": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Registra um novo usuário na API",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Retorna o usuário criado e o token de acesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/registerResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/registerResponse"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "Criado"
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/registerBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/registerBody"
+              }
+            }
           }
         }
       }
@@ -388,6 +519,107 @@
         "xml": {
           "name": "error400"
         }
+      },
+      "loginBody": {
+        "type": "object",
+        "properties": {
+          "nomeUsuario": {
+            "type": "string",
+            "example": "string"
+          },
+          "senha": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": [
+          "nomeUsuario",
+          "senha"
+        ],
+        "xml": {
+          "name": "loginBody"
+        }
+      },
+      "loginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": [
+          "accessToken"
+        ],
+        "xml": {
+          "name": "loginResponse"
+        }
+      },
+      "registerBody": {
+        "type": "object",
+        "properties": {
+          "nomeUsuario": {
+            "type": "string",
+            "example": "string"
+          },
+          "senha": {
+            "type": "string",
+            "example": "string"
+          },
+          "confirmacaoSenha": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": [
+          "nomeUsuario",
+          "senha",
+          "confirmacaoSenha"
+        ],
+        "xml": {
+          "name": "registerBody"
+        }
+      },
+      "registerResponse": {
+        "type": "object",
+        "properties": {
+          "usuario": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "example": "string"
+              },
+              "nomeUsuario": {
+                "type": "string",
+                "example": "string"
+              }
+            },
+            "required": [
+              "id",
+              "nomeUsuario"
+            ]
+          },
+          "accessToken": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": [
+          "usuario",
+          "accessToken"
+        ],
+        "xml": {
+          "name": "registerResponse"
+        }
+      }
+    },
+    "securitySchemes": {
+      "JWT": {
+        "type": "apiKey",
+        "name": "Authorization",
+        "in": "header",
+        "description": "Token JWT, conseguido na rota de login ou cadastro, a ser passado como 'Authorization: Bearer <token>'"
       }
     }
   }
