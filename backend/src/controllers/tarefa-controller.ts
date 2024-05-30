@@ -7,6 +7,7 @@ import {
   updateTarefaParams,
   updateTarefaSchema,
 } from '../schemas/tarefa-schemas';
+import { ReqUser } from '../types/request';
 
 export default class TarefaController {
   static async getAll(req: Request, res: Response) {
@@ -19,6 +20,9 @@ export default class TarefaController {
     }
     */
     const tarefas = await prisma.tarefa.findMany({
+      where: {
+        usuarioId: (req.user as ReqUser).id,
+      },
       orderBy: [{ status: 'asc' }, { dataCriacao: 'desc' }],
     });
     return res.status(200).json({ tarefas });
@@ -44,6 +48,9 @@ export default class TarefaController {
     });
 
     if (!tarefa) return res.sendStatus(404);
+    if (tarefa.usuarioId != (req.user as ReqUser).id) {
+      return res.sendStatus(403);
+    }
     return res.status(200).json(tarefa);
   }
 
@@ -71,6 +78,7 @@ export default class TarefaController {
       data: {
         ...data,
         descricao: data.descricao || '',
+        usuarioId: (req.user as ReqUser).id,
       },
     });
     return res.status(201).json(tarefa);
@@ -105,6 +113,9 @@ export default class TarefaController {
       },
     });
     if (!tarefa) return res.sendStatus(404);
+    if (tarefa.usuarioId != (req.user as ReqUser).id) {
+      return res.sendStatus(403);
+    }
 
     const data = updateTarefaSchema.parse(req.body);
     const tarefaAtualizada = await prisma.tarefa.update({
@@ -134,6 +145,9 @@ export default class TarefaController {
       },
     });
     if (!tarefa) return res.sendStatus(404);
+    if (tarefa.usuarioId != (req.user as ReqUser).id) {
+      return res.sendStatus(403);
+    }
 
     await prisma.tarefa.delete({ where: { id: params.id } });
     return res.sendStatus(200);
