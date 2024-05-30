@@ -25,4 +25,13 @@ model Tarefa {
   descricao   String
   status      Status   @default(PENDENTE)
   dataCriacao DateTime @default(now())
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id])
+  usuarioId   String
+}
+
+model Usuario {
+  id          String   @id @default(uuid())
+  nomeUsuario String   @unique
+  senha       String
+  tarefas     Tarefa[]
 }
