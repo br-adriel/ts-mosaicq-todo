@@ -12,10 +12,18 @@ export default function Footer() {
 
         <S.Author>
           <div>
-            <a href='' target='_blank' title='LinkedIn'>
+            <a
+              href='https://www.linkedin.com/in/adriel-fsantos/'
+              target='_blank'
+              title='LinkedIn'
+            >
               <LinkedinLogo size={24} />
             </a>
-            <a href='' target='_blank' title='Github'>
+            <a
+              href='https://github.com/br-adriel'
+              target='_blank'
+              title='Github'
+            >
               <GithubLogo size={24} />
             </a>
           </div>
