@@ -1,5 +1,6 @@
 import { RouteObject, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
+import WithAuth from '../hoc/WithAuth';
 import AddTarefa from '../pages/AddTarefa';
 import Details from '../pages/Details';
 import ErrorPage from '../pages/Error';
@@ -7,6 +8,7 @@ import Home from '../pages/Home';
 import Login from '../pages/Login';
 import Register from '../pages/Register';
 import UpdateTarefa from '../pages/UpdateTarefa';
+import { useAuthOnRoutes, useNoAuthOnRoutes } from '../utils/auth';
 
 const taskRoutes: RouteObject[] = [
   {
@@ -42,15 +44,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: '',
-        element: <Home />,
+        element: <WithAuth Page={<Home />} />,
       },
       {
         path: 'tasks/',
-        children: taskRoutes,
+        children: useAuthOnRoutes(taskRoutes),
       },
       {
         path: '',
-        children: authRoutes,
+        children: useNoAuthOnRoutes(authRoutes),
       },
     ],
   },
