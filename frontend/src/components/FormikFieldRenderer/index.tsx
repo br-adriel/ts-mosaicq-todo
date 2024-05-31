@@ -1,5 +1,5 @@
 import { ErrorMessage, Field, useField } from 'formik';
-import { FormField } from '../../interfaces/FormField';
+import { FormField } from '../../types/FormField';
 import Select from '../Select';
 import * as S from './style';
 

@@ -1,6 +1,6 @@
 import { useField } from 'formik';
 import ReactSelect from 'react-select';
-import { FormField } from '../../interfaces/FormField';
+import { FormField } from '../../types/FormField';
 import style from './style.module.css';
 import clsx from 'clsx/lite';
 

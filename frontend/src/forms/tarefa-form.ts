@@ -1,7 +1,7 @@
-import { FormField } from '../interfaces/FormField';
+import { FormObject } from '../types/FormObject';
 import { tarefaFormSchema } from '../schemas/tarefa-form-schema';
 
-export const tarefaForm = {
+export const tarefaForm: FormObject = {
   initialValues: {
     titulo: '',
     descricao: '',
@@ -41,5 +41,5 @@ export const tarefaForm = {
         },
       ],
     },
-  ] as FormField[],
+  ],
 };
