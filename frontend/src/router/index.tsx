@@ -1,10 +1,33 @@
-import { createBrowserRouter } from 'react-router-dom';
+import { RouteObject, createBrowserRouter } from 'react-router-dom';
 import App from '../App';
 import AddTarefa from '../pages/AddTarefa';
 import Details from '../pages/Details';
 import ErrorPage from '../pages/Error';
 import Home from '../pages/Home';
+import Login from '../pages/Login';
 import UpdateTarefa from '../pages/UpdateTarefa';
+
+const taskRoutes: RouteObject[] = [
+  {
+    path: 'add',
+    element: <AddTarefa />,
+  },
+  {
+    path: ':id',
+    element: <Details />,
+  },
+  {
+    path: ':id/update',
+    element: <UpdateTarefa />,
+  },
+];
+
+const authRoutes: RouteObject[] = [
+  {
+    path: 'login',
+    element: <Login />,
+  },
+];
 
 const router = createBrowserRouter([
   {
@@ -17,16 +40,12 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: 'tasks/add',
-        element: <AddTarefa />,
+        path: 'tasks/',
+        children: taskRoutes,
       },
       {
-        path: 'tasks/:id',
-        element: <Details />,
-      },
-      {
-        path: 'tasks/:id/update',
-        element: <UpdateTarefa />,
+        path: '',
+        children: authRoutes,
       },
     ],
   },
