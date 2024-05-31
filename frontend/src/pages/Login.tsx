@@ -21,7 +21,7 @@ export default function Login() {
     <AuthPageLayout>
       <h2>Fazer login</h2>
       {isLoading ? (
-        <Loading />
+        <Loading noStyle />
       ) : (
         <AuthForm onSubmit={submit} formObject={loginForm} />
       )}

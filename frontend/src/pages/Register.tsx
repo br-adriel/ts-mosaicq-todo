@@ -21,7 +21,7 @@ export default function Register() {
     <AuthPageLayout>
       <h2>Criar conta</h2>
       {isLoading ? (
-        <Loading />
+        <Loading noStyle />
       ) : (
         <AuthForm
           onSubmit={submit}
