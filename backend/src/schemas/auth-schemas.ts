@@ -28,3 +28,10 @@ export const registerSchema = loginSchema
     message: 'As senhas não correspondem',
     path: ['confirmacaoSenha'],
   });
+
+export const refreshSchema = z.object({
+  refreshToken: z.string({
+    required_error: 'Forneça um refreshToken',
+    invalid_type_error: 'Forneça uma string para o refresh token',
+  }),
+});

@@ -324,6 +324,9 @@
         "description": "",
         "responses": {
           "200": {
+            "description": "OK"
+          },
+          "201": {
             "description": "Retorna o usuário criado e o token de acesso.",
             "content": {
               "application/json": {
@@ -337,9 +340,6 @@
                 }
               }
             }
-          },
-          "201": {
-            "description": "Criado"
           },
           "400": {
             "description": "Solicitação Inválida"
@@ -359,6 +359,56 @@
             "application/xml": {
               "schema": {
                 "$ref": "#/components/schemas/registerBody"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/refresh": {
+      "post": {
+        "tags": [
+          "Autenticação"
+        ],
+        "summary": "Retorna novos tokens",
+        "description": "",
+        "responses": {
+          "200": {
+            "description": "Retorna os tokens de acesso.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginResponse"
+                }
+              },
+              "application/xml": {
+                "schema": {
+                  "$ref": "#/components/schemas/loginResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Solicitação Inválida"
+          },
+          "401": {
+            "description": "Não autorizado"
+          },
+          "500": {
+            "description": "Erro Interno do Servidor"
+          }
+        },
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/refreshBody"
+              }
+            },
+            "application/xml": {
+              "schema": {
+                "$ref": "#/components/schemas/refreshBody"
               }
             }
           }
@@ -546,10 +596,15 @@
           "accessToken": {
             "type": "string",
             "example": "string"
+          },
+          "refreshToken": {
+            "type": "string",
+            "example": "string"
           }
         },
         "required": [
-          "accessToken"
+          "accessToken",
+          "refreshToken"
         ],
         "xml": {
           "name": "loginResponse"
@@ -603,14 +658,34 @@
           "accessToken": {
             "type": "string",
             "example": "string"
+          },
+          "refeshToken": {
+            "type": "string",
+            "example": "string"
           }
         },
         "required": [
           "usuario",
-          "accessToken"
+          "accessToken",
+          "refeshToken"
         ],
         "xml": {
           "name": "registerResponse"
+        }
+      },
+      "refreshBody": {
+        "type": "object",
+        "properties": {
+          "refreshToken": {
+            "type": "string",
+            "example": "string"
+          }
+        },
+        "required": [
+          "refreshToken"
+        ],
+        "xml": {
+          "name": "refreshBody"
         }
       }
     },

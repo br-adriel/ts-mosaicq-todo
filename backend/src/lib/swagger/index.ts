@@ -60,6 +60,7 @@ const doc = {
       },
       loginResponse: {
         $accessToken: 'string',
+        $refreshToken: 'string',
       },
       registerBody: {
         $nomeUsuario: 'string',
@@ -72,6 +73,10 @@ const doc = {
           $nomeUsuario: 'string',
         },
         $accessToken: 'string',
+        $refeshToken: 'string',
+      },
+      refreshBody: {
+        $refreshToken: 'string',
       },
     },
   },

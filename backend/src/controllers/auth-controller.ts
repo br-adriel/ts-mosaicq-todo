@@ -2,16 +2,37 @@ import * as argon2 from 'argon2';
 import { Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
 import prisma from '../lib/prisma';
-import { loginSchema, registerSchema } from '../schemas/auth-schemas';
+import {
+  loginSchema,
+  refreshSchema,
+  registerSchema,
+} from '../schemas/auth-schemas';
 
-function generateToken(userId: string) {
+function generateToken(userId: string, duration = '1d') {
   return jwt.sign(
     {
       id: userId,
     },
     process.env.JWT_SECRET_KEY!,
-    { expiresIn: '1d', subject: userId }
+    { expiresIn: duration, subject: userId }
   );
+}
+
+async function generateAccessAndRefreshTokens(userId: string) {
+  const accessToken = generateToken(userId);
+  const refreshToken = generateToken(userId, '3d');
+  await prisma.refreshToken.deleteMany({
+    where: {
+      usuarioId: userId,
+    },
+  });
+  await prisma.refreshToken.create({
+    data: {
+      token: refreshToken,
+      usuarioId: userId,
+    },
+  });
+  return { accessToken, refreshToken };
 }
 
 export default class AuthController {
@@ -48,8 +69,8 @@ export default class AuthController {
       });
     }
 
-    const accessToken = generateToken(usuario.id);
-    return res.status(200).json({ accessToken });
+    const tokens = await generateAccessAndRefreshTokens(usuario.id);
+    return res.status(200).json(tokens);
   }
 
   static async register(req: Request, res: Response) {
@@ -62,7 +83,7 @@ export default class AuthController {
     }
     */
     /**
-    #swagger.responses[200] = {
+    #swagger.responses[201] = {
       description: 'Retorna o usuário criado e o token de acesso.',
       schema: { $ref: '#/components/schemas/registerResponse' }
     }
@@ -94,8 +115,44 @@ export default class AuthController {
         nomeUsuario: true,
       },
     });
-    const accessToken = generateToken(usuario.id);
 
-    return res.status(201).json({ accessToken });
+    const tokens = await generateAccessAndRefreshTokens(usuario.id);
+    return res.status(201).json({
+      usuario,
+      ...tokens,
+    });
+  }
+
+  static async refresh(req: Request, res: Response) {
+    /**
+    #swagger.tags = ['Autenticação']
+    #swagger.summary = 'Retorna novos tokens'
+    #swagger.requestBody = {
+      required: true,
+      schema: { $ref: "#/components/schemas/refreshBody" }
+    }
+    */
+    /**
+    #swagger.responses[200] = {
+      description: 'Retorna os tokens de acesso.',
+      schema: { $ref: '#/components/schemas/loginResponse' }
+    }
+    */
+    const body = refreshSchema.parse(req.body);
+
+    let token;
+    try {
+      token = await prisma.refreshToken.delete({
+        where: {
+          token: body.refreshToken,
+        },
+      });
+      jwt.verify(body.refreshToken, process.env.JWT_SECRET_KEY!);
+    } catch (err) {
+      return res.sendStatus(401);
+    }
+
+    const tokens = await generateAccessAndRefreshTokens(token.usuarioId);
+    return res.status(200).json(tokens);
   }
 }

@@ -30,8 +30,15 @@ model Tarefa {
 }
 
 model Usuario {
-  id          String   @id @default(uuid())
-  nomeUsuario String   @unique
-  senha       String
-  tarefas     Tarefa[]
+  id            String         @id @default(uuid())
+  nomeUsuario   String         @unique
+  senha         String
+  tarefas       Tarefa[]
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  token     String  @id
+  usuario   Usuario @relation(fields: [usuarioId], references: [id])
+  usuarioId String
 }
