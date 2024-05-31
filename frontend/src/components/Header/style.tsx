@@ -7,12 +7,19 @@ export const Header = styled.header`
 
   ${Container} {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     padding: 16px;
+    gap: 32px;
   }
 
   h1 {
     font-size: 1.5rem;
+  }
+
+  button {
+    padding: 8px;
+    border: none;
   }
 
   a {
