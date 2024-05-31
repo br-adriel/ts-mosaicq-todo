@@ -1,4 +1,12 @@
 export type LoginFormValues = {
-  email: string;
-  password: string;
+  nomeUsuario: string;
+  senha: string;
 };
+
+export type RegisterFormValues = {
+  nomeUsuario: string;
+  senha: string;
+  confirmacaoSenha: string;
+};
+
+export type AuthFormValues = LoginFormValues | RegisterFormValues;
