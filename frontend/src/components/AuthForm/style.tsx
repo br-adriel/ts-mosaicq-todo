@@ -6,6 +6,11 @@ export const Form = styled(FormikForm)`
     margin-bottom: 16px;
   }
 
+  a,
+  a:visited {
+    color: var(--btn-color-secondary);
+  }
+
   a:hover {
     text-decoration: underline;
   }

@@ -1,11 +1,15 @@
 import AuthPageLayout from '../components/AuthPageLayout';
-import LoginForm from '../components/LoginForm';
+import AuthForm from '../components/AuthForm';
+import { loginForm } from '../forms/login-form';
 
 export default function Login() {
   return (
     <AuthPageLayout>
       <h2>Fazer login</h2>
-      <LoginForm onSubmit={(values) => console.log(values)} />
+      <AuthForm
+        onSubmit={(values) => console.log(values)}
+        formObject={loginForm}
+      />
     </AuthPageLayout>
   );
 }
