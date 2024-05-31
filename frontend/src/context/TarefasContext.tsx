@@ -22,7 +22,7 @@ interface IProps {
 }
 
 const handleError = (err: any) => {
-  if (err.response) {
+  if (err.response && err.response.data.error) {
     toast.error('Um erro ocorreu: ' + err.response.data.error);
   } else {
     toast.error('Um erro ocorreu!');
