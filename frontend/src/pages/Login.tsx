@@ -1,30 +1,20 @@
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { toast } from 'react-toastify';
 import AuthForm from '../components/AuthForm';
 import AuthPageLayout from '../components/AuthPageLayout';
 import Loading from '../components/Loading';
+import AuthContext from '../context/AuthContext';
 import { loginForm } from '../forms/login-form';
-import { api } from '../lib/axios';
-import { LoginFormValues } from '../types/Auth';
+import { LoginFormValues } from '../types/auth';
 
 export default function Login() {
+  const { isLoading, login } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  const fazerLogin = async (values: LoginFormValues) => {
+  const submit = (values: LoginFormValues) => {
     try {
-      setIsLoading(true);
-      const { data } = await api.post<LoginResponse>('auth/login', values);
-      localStorage.setItem('accessToken', data.accessToken);
-      localStorage.setItem('refreshToken', data.refreshToken);
-      navigate('/');
-    } catch (err: any) {
-      toast.error(err.response.data.error);
-    } finally {
-      setIsLoading(false);
-    }
+      login(values).then(() => navigate('/'));
+    } catch (err) {}
   };
 
   return (
@@ -33,7 +23,7 @@ export default function Login() {
       {isLoading ? (
         <Loading />
       ) : (
-        <AuthForm onSubmit={fazerLogin} formObject={loginForm} />
+        <AuthForm onSubmit={submit} formObject={loginForm} />
       )}
     </AuthPageLayout>
   );

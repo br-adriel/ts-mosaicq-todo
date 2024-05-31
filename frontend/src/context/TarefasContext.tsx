@@ -1,8 +1,9 @@
-import { ReactNode, createContext, useState } from 'react';
+import { ReactNode, createContext, useContext, useState } from 'react';
 import { toast } from 'react-toastify';
 import { api } from '../lib/axios';
 import Tarefa, { TarefaData } from '../model/Tarefa';
 import { sortByStatusAndDataCriacao } from '../utils/tarefas';
+import AuthContext from './AuthContext';
 
 interface TarefasContextData {
   tarefas: Tarefa[];
@@ -21,17 +22,21 @@ interface IProps {
   children: ReactNode;
 }
 
-const handleError = (err: any) => {
-  if (err.response && err.response.data.error) {
-    toast.error('Um erro ocorreu: ' + err.response.data.error);
-  } else {
-    toast.error('Um erro ocorreu!');
-  }
-};
-
 export const TarefasProvider = ({ children }: IProps) => {
   const [tarefas, setTarefas] = useState<Tarefa[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { updateAuth } = useContext(AuthContext);
+
+  const handleError = (err: any) => {
+    if (err.response && err.response.data.error) {
+      if (err.status === 401) {
+        updateAuth();
+      }
+      toast.error('Um erro ocorreu: ' + err.response.data.error);
+    } else {
+      toast.error('Um erro ocorreu!');
+    }
+  };
 
   const fetchAll = async () => {
     try {

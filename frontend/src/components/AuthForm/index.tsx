@@ -1,12 +1,11 @@
 import { Formik } from 'formik';
 import { Link } from 'react-router-dom';
 import { FormObject } from '../../types/FormObject';
-import { AuthFormValues } from '../../types/Auth';
 import FormikFieldRenderer from '../FormikFieldRenderer';
 import * as S from './style';
 
 interface IProps {
-  onSubmit: (values: AuthFormValues) => void;
+  onSubmit: (values: any) => void;
   formObject: FormObject;
   variant?: 'login' | 'cadastro';
 }

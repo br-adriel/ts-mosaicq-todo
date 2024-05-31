@@ -14,7 +14,7 @@ export const Header = styled.header`
   }
 
   h1 {
-    font-size: 1.5rem;
+    font-size: 1.7rem;
   }
 
   button {
