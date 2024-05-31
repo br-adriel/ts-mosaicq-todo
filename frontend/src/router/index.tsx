@@ -5,6 +5,7 @@ import Details from '../pages/Details';
 import ErrorPage from '../pages/Error';
 import Home from '../pages/Home';
 import Login from '../pages/Login';
+import Register from '../pages/Register';
 import UpdateTarefa from '../pages/UpdateTarefa';
 
 const taskRoutes: RouteObject[] = [
@@ -26,6 +27,10 @@ const authRoutes: RouteObject[] = [
   {
     path: 'login',
     element: <Login />,
+  },
+  {
+    path: 'register',
+    element: <Register />,
   },
 ];
 
