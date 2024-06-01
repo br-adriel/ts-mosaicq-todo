@@ -9,12 +9,12 @@ import './index.css';
 import router from './router';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    <AuthProvider>
-      <TarefasProvider>
-        <RouterProvider router={router} />
-        <ToastContainer position='bottom-center' closeOnClick />
-      </TarefasProvider>
-    </AuthProvider>
-  </React.StrictMode>
+  // <React.StrictMode>
+  <AuthProvider>
+    <TarefasProvider>
+      <RouterProvider router={router} />
+      <ToastContainer position='bottom-center' closeOnClick />
+    </TarefasProvider>
+  </AuthProvider>
+  // </React.StrictMode>
 );
