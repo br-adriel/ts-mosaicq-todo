@@ -83,7 +83,7 @@ sequenceDiagram
   U->>FR: Ação realizada pelo usuário retorna erro 401 da API
   activate U
   activate FR
-  FR->>API: POST /refresh
+  FR->>API: POST /auth/refresh
   activate API
   API->>DB: Remove token de atualização do banco de dados
   activate DB
