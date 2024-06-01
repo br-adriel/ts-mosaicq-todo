@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import BackButton from '../components/BackButton';
 import Container from '../components/Container';
@@ -9,6 +9,10 @@ import TarefasContext from '../context/TarefasContext';
 
 export default function AddTarefa() {
   const { create, isLoading } = useContext(TarefasContext);
+
+  useEffect(() => {
+    document.title = 'Adicionar tarefa | Mosaicq Tasks';
+  }, []);
 
   return (
     <Main>

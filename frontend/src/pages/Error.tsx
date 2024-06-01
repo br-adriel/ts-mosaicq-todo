@@ -2,9 +2,14 @@ import { Link, useRouteError } from 'react-router-dom';
 import styled from 'styled-components';
 import Footer from '../components/Footer';
 import Header from '../components/Header';
+import { useEffect } from 'react';
 
 export default function ErrorPage() {
   const error = useRouteError() as any;
+
+  useEffect(() => {
+    document.title = 'Ooops... | Mosaicq Tasks';
+  }, []);
 
   return (
     <>

@@ -46,6 +46,10 @@ export default function UpdateTarefa() {
     }
   }, [id]);
 
+  useEffect(() => {
+    document.title = 'Atualizar tarefa | Mosaicq Tasks';
+  }, []);
+
   return (
     <Main>
       <Container>

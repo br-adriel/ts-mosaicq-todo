@@ -15,6 +15,10 @@ export default function Home() {
     fetchAll();
   }, []);
 
+  useEffect(() => {
+    document.title = 'Mosaicq Tasks';
+  }, []);
+
   return (
     <Main>
       <Container>

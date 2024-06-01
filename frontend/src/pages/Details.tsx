@@ -32,6 +32,10 @@ export default function Details() {
     if (id) getTarefa();
   }, [id]);
 
+  useEffect(() => {
+    document.title = 'Visualizar tarefa | Mosaicq Tasks';
+  }, []);
+
   return (
     <Main>
       <Container>

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import AuthPageLayout from '../components/AuthPageLayout';
@@ -16,6 +16,10 @@ export default function Register() {
       register(values).then(() => navigate('/'));
     } catch (err) {}
   };
+
+  useEffect(() => {
+    document.title = 'Criar conta | Mosaicq Tasks';
+  }, []);
 
   return (
     <AuthPageLayout>

@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthForm from '../components/AuthForm';
 import AuthPageLayout from '../components/AuthPageLayout';
@@ -16,6 +16,10 @@ export default function Login() {
       login(values).then(() => navigate('/'));
     } catch (err) {}
   };
+
+  useEffect(() => {
+    document.title = 'Fazer login | Mosaicq Tasks';
+  }, []);
 
   return (
     <AuthPageLayout>
