@@ -1,4 +1,5 @@
 import { Tarefa } from '@prisma/client';
+import { ZodError } from 'zod';
 import TarefaController from '../../controllers/tarefa-controller';
 import { mockRequest, mockResponse } from '../mocks/express';
 import { prismaMock } from '../mocks/prisma';
@@ -118,6 +119,44 @@ describe('TarefaControler', () => {
       await TarefaController.getOne(req, res);
 
       expect(res.sendStatus).toHaveBeenCalledWith(403);
+    });
+  });
+
+  describe('create', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Lança erro de validação quando faltam dados obrigatórios', async () => {
+      const req = mockRequest({ user: { id: '1' }, body: {} });
+      const res = mockResponse;
+
+      await expect(TarefaController.create(req, res)).rejects.toThrow(ZodError);
+    });
+
+    test('Retorna a tarefa criada com os dados corretos', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        body: {
+          titulo: 'Minha tarefa',
+        },
+      });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'PENDENTE',
+        titulo: 'Minha tarefa',
+        usuarioId: '1',
+      };
+      prismaMock.tarefa.create.mockResolvedValue(tarefa);
+
+      await TarefaController.create(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith(tarefa);
     });
   });
 });
