@@ -64,4 +64,60 @@ describe('TarefaControler', () => {
       });
     });
   });
+
+  describe('getOne', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Retorna 404 quando não encontra a tarefa', async () => {
+      const req = mockRequest({ user: { id: '1' }, params: { id: '1' } });
+      const res = mockResponse;
+
+      prismaMock.tarefa.findUnique.mockResolvedValue(null);
+
+      await TarefaController.getOne(req, res);
+
+      expect(res.sendStatus).toHaveBeenCalledWith(404);
+    });
+
+    test('Retorna a tarefa quando ela existe e pertence ao usuário', async () => {
+      const req = mockRequest({ user: { id: '1' }, params: { id: '1' } });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'EM_PROGRESSO',
+        titulo: 'Minha tarefa',
+        usuarioId: '1',
+      };
+      prismaMock.tarefa.findUnique.mockResolvedValue(tarefa);
+
+      await TarefaController.getOne(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(tarefa);
+    });
+
+    test('Retorna 403 quando a tarefa não pertence ao usuário', async () => {
+      const req = mockRequest({ user: { id: '1' }, params: { id: '1' } });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'EM_PROGRESSO',
+        titulo: 'Tarefa de outra pessoa',
+        usuarioId: '2',
+      };
+      prismaMock.tarefa.findUnique.mockResolvedValue(tarefa);
+
+      await TarefaController.getOne(req, res);
+
+      expect(res.sendStatus).toHaveBeenCalledWith(403);
+    });
+  });
 });
