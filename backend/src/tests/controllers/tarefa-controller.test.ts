@@ -237,4 +237,68 @@ describe('TarefaControler', () => {
       expect(res.json).toHaveBeenCalledWith(tarefaAtualizada);
     });
   });
+
+  describe('delete', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Retorna 404 quando a tarefa não existe', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        params: { id: '1' },
+      });
+      const res = mockResponse;
+
+      prismaMock.tarefa.findUnique.mockResolvedValue(null);
+
+      await TarefaController.delete(req, res);
+      expect(res.sendStatus).toHaveBeenCalledWith(404);
+    });
+
+    test('Retorna 403 quando a tarefa não pertence ao usuário', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        params: { id: '1' },
+      });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'PENDENTE',
+        titulo: 'Minha tarefa',
+        usuarioId: '2',
+      };
+      prismaMock.tarefa.findUnique.mockResolvedValue(tarefa);
+
+      await TarefaController.delete(req, res);
+
+      expect(res.sendStatus).toHaveBeenCalledWith(403);
+    });
+
+    test('Retorna 200 quando ocorre com sucesso', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        params: { id: '1' },
+      });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'PENDENTE',
+        titulo: 'Minha tarefa',
+        usuarioId: '1',
+      };
+      prismaMock.tarefa.findUnique.mockResolvedValue(tarefa);
+      prismaMock.tarefa.delete.mockResolvedValue(tarefa);
+
+      await TarefaController.delete(req, res);
+
+      expect(res.sendStatus).toHaveBeenCalledWith(200);
+    });
+  });
 });
