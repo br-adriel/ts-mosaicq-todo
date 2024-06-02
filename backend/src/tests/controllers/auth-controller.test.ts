@@ -3,23 +3,23 @@ import * as argon2 from 'argon2';
 import AuthController from '../../controllers/auth-controller';
 import { mockRequest, mockResponse } from '../mocks/express';
 import { prismaMock } from '../mocks/prisma';
+import { ZodError } from 'zod';
+import { access } from 'fs';
 
 describe('AuthController', () => {
-  beforeAll(() => {
+  let usuario: Usuario;
+
+  beforeAll(async () => {
     process.env.JWT_SECRET_KEY = 'segredo_jwt_testes';
+
+    usuario = {
+      id: '1',
+      nomeUsuario: 'fulano',
+      senha: await argon2.hash('teste123'),
+    };
   });
 
   describe('login', () => {
-    let usuario: Usuario;
-
-    beforeAll(async () => {
-      usuario = {
-        id: '1',
-        nomeUsuario: 'fulano',
-        senha: await argon2.hash('teste123'),
-      };
-    });
-
     afterEach(() => {
       jest.clearAllMocks();
     });
@@ -92,7 +92,111 @@ describe('AuthController', () => {
     });
   });
 
-  describe('register', () => {});
+  describe('register', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Se falta algo no corpo da requisição, lança erro de validação', async () => {
+      const req = mockRequest({ body: { nomeUsuario: 'sicrano' } });
+      const res = mockResponse;
+
+      await expect(AuthController.register(req, res)).rejects.toThrow(ZodError);
+    });
+
+    test('Se o nome de usuário é curto demais, lança erro de validação', async () => {
+      const req = mockRequest({
+        body: {
+          nomeUsuario: 'sic',
+          senha: 'teste123',
+          confirmacaoSenha: 'teste123',
+        },
+      });
+      const res = mockResponse;
+
+      await expect(AuthController.register(req, res)).rejects.toThrow(ZodError);
+    });
+
+    test('Se a senha é curta demais, lança erro de validação', async () => {
+      const req = mockRequest({
+        body: {
+          nomeUsuario: 'sicrano',
+          senha: 'teste12',
+          confirmacaoSenha: 'teste12',
+        },
+      });
+      const res = mockResponse;
+
+      await expect(AuthController.register(req, res)).rejects.toThrow(ZodError);
+    });
+
+    test('Se as senhas são diferentes, lança erro de validação', async () => {
+      const req = mockRequest({
+        body: {
+          nomeUsuario: 'sicrano',
+          senha: 'teste123',
+          confirmacaoSenha: 'teste1234',
+        },
+      });
+      const res = mockResponse;
+
+      await expect(AuthController.register(req, res)).rejects.toThrow(ZodError);
+    });
+
+    test('Se nome de usuário em uso, retorna 400 e mensagem', async () => {
+      const req = mockRequest({
+        body: {
+          nomeUsuario: 'fulano',
+          senha: 'teste123',
+          confirmacaoSenha: 'teste123',
+        },
+      });
+      const res = mockResponse;
+
+      prismaMock.usuario.findUnique.mockResolvedValue(usuario);
+
+      await AuthController.register(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(400);
+      expect(res.json).toHaveBeenCalledWith({
+        error: 'Nome de usuário em uso',
+        details: {
+          nomeUsuario: 'O nome de usuário já está em uso',
+        },
+      });
+    });
+
+    test('Se ocorre com sucesso, retorna 201, usuário criado e tokens de acesso', async () => {
+      const req = mockRequest({
+        body: {
+          nomeUsuario: 'fulano',
+          senha: 'teste123',
+          confirmacaoSenha: 'teste123',
+        },
+      });
+      const res = mockResponse;
+
+      prismaMock.usuario.findUnique.mockResolvedValue(null);
+      prismaMock.usuario.create.mockResolvedValue({
+        id: usuario.id,
+        nomeUsuario: usuario.nomeUsuario,
+      } as Usuario);
+
+      await AuthController.register(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(201);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          usuario: {
+            id: usuario.id,
+            nomeUsuario: usuario.nomeUsuario,
+          },
+          accessToken: expect.anything(),
+          refreshToken: expect.anything(),
+        })
+      );
+    });
+  });
 
   describe('refresh', () => {});
 });
