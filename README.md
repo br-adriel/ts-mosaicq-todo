@@ -50,6 +50,18 @@ Escolhi esse armazenadmento ao invés do sessionStorage para oferecer a
 comodidade do usuário não ter que fazer login novamente sempre que fechar o
 navegador.
 
+Os refreshTokens estão sendo salvos no postgres, e quando um novo é gerado os
+antigos são apagados. Inicialmente eles seriam mantidos para que o usuário
+pudesse manter o login em vários dispositivos ao mesmo tempo, porém isso
+acabaria deixando vários tokens não utilizados salvos no banco quando eles
+expirassem, já que eles só estão sendo excluidos ao serem renovados na rota de
+refresh.
+
+Idealmente eles estariam sendo salvos em um banco de dados redis com
+tempo de expiração definido para eles se auto excluirem, mas como a
+especificação mencionava apenas o postgres, essa foi a implementação que eu
+considerei a melhor abordagem.
+
 ### Atualização de tarefas
 
 A implementação da rota de atualização de tarefas foi feita com o verbo HTTP
