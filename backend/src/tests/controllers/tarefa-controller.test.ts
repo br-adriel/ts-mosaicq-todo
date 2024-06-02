@@ -159,4 +159,82 @@ describe('TarefaControler', () => {
       expect(res.json).toHaveBeenCalledWith(tarefa);
     });
   });
+
+  describe('update', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Retorna 404 quando a tarefa não existe', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        body: {
+          titulo: 'Minha tarefa',
+        },
+        params: { id: '1' },
+      });
+      const res = mockResponse;
+
+      prismaMock.tarefa.findUnique.mockResolvedValue(null);
+
+      await TarefaController.update(req, res);
+      expect(res.sendStatus).toHaveBeenCalledWith(404);
+    });
+
+    test('Retorna 403 quando a tarefa não pertence ao usuário', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        body: {
+          titulo: 'Minha tarefa',
+        },
+        params: { id: '1' },
+      });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'PENDENTE',
+        titulo: 'Minha tarefa',
+        usuarioId: '2',
+      };
+      prismaMock.tarefa.findUnique.mockResolvedValue(tarefa);
+
+      await TarefaController.update(req, res);
+
+      expect(res.sendStatus).toHaveBeenCalledWith(403);
+    });
+
+    test('Retorna a tarefa atualizada', async () => {
+      const req = mockRequest({
+        user: { id: '1' },
+        body: {
+          titulo: 'Minha tarefa renomeada',
+        },
+        params: { id: '1' },
+      });
+      const res = mockResponse;
+
+      const tarefa: Tarefa = {
+        dataCriacao: new Date(),
+        descricao: '',
+        id: '1',
+        status: 'PENDENTE',
+        titulo: 'Minha tarefa',
+        usuarioId: '1',
+      };
+      const tarefaAtualizada: Tarefa = {
+        ...tarefa,
+        titulo: 'Minha tarefa renomeada',
+      };
+      prismaMock.tarefa.findUnique.mockResolvedValue(tarefa);
+      prismaMock.tarefa.update.mockResolvedValue(tarefaAtualizada);
+
+      await TarefaController.update(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(tarefaAtualizada);
+    });
+  });
 });
