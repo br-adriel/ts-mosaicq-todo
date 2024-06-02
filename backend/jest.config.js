@@ -11,7 +11,7 @@ module.exports = {
     '!src/lib/**',
     '!src/schemas/**',
     '!**/**.d.ts',
-    '!coverage',
+    '!coverage/**',
   ],
   coverageDirectory: 'coverage',
   setupFilesAfterEnv: ['<rootDir>/src/tests/mocks/prisma.ts'],
