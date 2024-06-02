@@ -1,16 +1,18 @@
-import { Usuario } from '@prisma/client';
+import { RefreshToken, Usuario } from '@prisma/client';
 import * as argon2 from 'argon2';
 import AuthController from '../../controllers/auth-controller';
 import { mockRequest, mockResponse } from '../mocks/express';
 import { prismaMock } from '../mocks/prisma';
 import { ZodError } from 'zod';
-import { access } from 'fs';
+import jwt from 'jsonwebtoken';
 
 describe('AuthController', () => {
   let usuario: Usuario;
+  let JWT_SECRET_KEY: string;
 
   beforeAll(async () => {
-    process.env.JWT_SECRET_KEY = 'segredo_jwt_testes';
+    JWT_SECRET_KEY = 'segredo_jwt_testes';
+    process.env.JWT_SECRET_KEY = JWT_SECRET_KEY;
 
     usuario = {
       id: '1',
@@ -198,5 +200,48 @@ describe('AuthController', () => {
     });
   });
 
-  describe('refresh', () => {});
+  describe('refresh', () => {
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('Se refreshToken inválido, retorna 401', async () => {
+      const req = mockRequest({
+        body: { refreshToken: 'refreshTokenInválido' },
+      });
+      const res = mockResponse;
+
+      prismaMock.refreshToken.delete.mockRejectedValue(new Error());
+
+      await AuthController.refresh(req, res);
+
+      expect(res.sendStatus).toHaveBeenCalledWith(401);
+    });
+
+    test('Se refreshToken válido retorna 200 e novos tokens', async () => {
+      const refreshToken: RefreshToken = {
+        token: jwt.sign({ id: usuario.id }, JWT_SECRET_KEY, {
+          expiresIn: '3d',
+        }),
+        usuarioId: usuario.id,
+      };
+
+      const req = mockRequest({
+        body: { refreshToken: refreshToken.token },
+      });
+      const res = mockResponse;
+
+      prismaMock.refreshToken.delete.mockResolvedValue(refreshToken);
+
+      await AuthController.refresh(req, res);
+
+      expect(res.status).toHaveBeenCalledWith(200);
+      expect(res.json).toHaveBeenCalledWith(
+        expect.objectContaining({
+          accessToken: expect.anything(),
+          refreshToken: expect.anything(),
+        })
+      );
+    });
+  });
 });
